@@ -3,6 +3,8 @@
     <style name="Base.Theme.JuegoTablero" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorPrimary">@color/active</item>
     </style>
 
     <style name="Theme.JuegoTablero" parent="Base.Theme.JuegoTablero" />

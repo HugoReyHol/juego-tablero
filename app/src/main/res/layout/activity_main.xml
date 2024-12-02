@@ -8,12 +8,79 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/tablero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/textoActual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tablero"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tablero"
+        app:layout_constraintVertical_bias="0.1"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/bNorte"
+            android:layout_width="110sp"
+            android:layout_height="wrap_content"
+            android:text="Norte"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bOeste"
+                android:layout_width="110sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Oeste"
+                android:textSize="20sp" />
+
+            <Space
+                android:layout_width="10sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/bEste"
+                android:layout_width="110sp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Este"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bSur"
+            android:layout_width="110sp"
+            android:layout_height="wrap_content"
+            android:text="Sur"
+            android:textSize="20sp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
