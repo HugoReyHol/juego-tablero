@@ -99,19 +99,10 @@ class MainActivity : AppCompatActivity() {
         val inactivo: Int = getColor(R.color.inactive)
         val activo: Int = getColor(R.color.active)
 
-        if (preguntando) {
-            bNorte.isClickable = false
-            bOeste.isClickable = false
-            bEste.isClickable = false
-            bSur.isClickable = false
-
-        } else {
-            bNorte.isClickable = casillaActual > 3
-            bOeste.isClickable = casillaActual%4 != 0
-            bEste.isClickable = casillaActual%4 != 3
-            bSur.isClickable = casillaActual < 12
-
-        }
+        bNorte.isClickable = !preguntando && casillaActual > 3
+        bOeste.isClickable = !preguntando && casillaActual%4 != 0
+        bEste.isClickable = !preguntando && casillaActual%4 != 3
+        bSur.isClickable = !preguntando && casillaActual < 12
 
         bNorte.setBackgroundColor( if (bNorte.isClickable) activo else inactivo)
         bOeste.setBackgroundColor( if (bOeste.isClickable) activo else inactivo)
@@ -132,7 +123,7 @@ class MainActivity : AppCompatActivity() {
         mostrarTablero()
 
         if (explorado[casillaActual] == getString(R.string.sinMirar)) {
-            // TODO Si no es dulce hacer pregunta
+            // TODO Si es habitacion vacia hacer pregunta
             actualizarBotones(true)
 
             // TODO Si es fantasma hacer otra más
