@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.hugo.juegotablero.model.Casilla
 
+const val ANCHO_LADO: Int = 4
 
 class MainActivity : AppCompatActivity() {
-    private val NUM_HABITACIONES: Int = 16
-
-    private val habitaciones: ArrayList<String> = arrayListOf()
-    private val explorado: ArrayList<String> = arrayListOf()
+    private val habitaciones: Array<Array<Casilla>> = Array(ANCHO_LADO) {
+        Array(ANCHO_LADO) {Casilla()}
+    }
 
     private lateinit var tablero: TextView
     private lateinit var textoActual: TextView
@@ -19,19 +20,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bEste: Button
     private lateinit var bSur: Button
 
-    private var casillaActual: Int = 0
+    private lateinit var casillaActual: Pair<Int, Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        configurarComponentes()
-        configurarJuego()
+        inicializarComponentes()
+        inicializarJuego()
 
     }
 
-    private fun configurarComponentes() {
+    private fun inicializarComponentes() {
         tablero = findViewById(R.id.tablero)
         textoActual = findViewById(R.id.textoActual)
 
@@ -54,26 +54,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun configurarJuego() {
-        casillaActual = 0
-        habitaciones.clear()
-        explorado.clear()
-
-        for (i in 0..<NUM_HABITACIONES) {
-            // Todas las habitaciones sin explorar
-            explorado.add(getString(R.string.sinMirar))
-
-            // Habitaciones vacías añade fantasmas el 20% de las veces
-            habitaciones.add(getString( if ((1..10).random() <= 2) R.string.fantasma else R.string.vacia ))
-
+    private fun inicializarJuego() {
+        casillaActual = Pair(0, 0)
+        habitaciones.forEach {
+            it.forEach {
+                it.reiniciar()
+            }
         }
 
-        // El dulce se coloca en una habitación aleatoria diferente a la entrada
-        habitaciones[(1..<NUM_HABITACIONES).random()] = getString(R.string.dulce)
-
         // La entrada siempre está situada arriba a la izquierda
-        habitaciones[0] = getString(R.string.puerta)
-        explorado[0] = habitaciones[0]
+        var inicio: Casilla = habitaciones[casillaActual.first][casillaActual.second]
+
+        inicio.tipo = Casilla.Tipos.ENTRADA
+        inicio.explorada = true
+
+        // El dulce se coloca en una habitación aleatoria diferente a la entrada
+        var salida: Casilla
+
+        do {
+            salida = habitaciones[(0..<ANCHO_LADO).random()][(0..<ANCHO_LADO).random()]
+
+        } while (inicio == salida)
+
+        salida.tipo = Casilla.Tipos.DULCE
+
 
         mostrarTablero()
         actualizarBotones()
@@ -82,16 +86,30 @@ class MainActivity : AppCompatActivity() {
 
     private fun mostrarTablero() {
         val t: String = buildString {
-            for (i in 0..<NUM_HABITACIONES) {
-                append(if (i != casillaActual) explorado[i] else getString(R.string.actual))
+            habitaciones.forEachIndexed() { f: Int, columna: Array<Casilla> ->
+                columna.forEachIndexed() { c: Int, casilla: Casilla ->
+                    if (casillaActual == Pair(f, c)) {
+                        append(getString(R.string.persona))
 
-                if ((i+1)%4 == 0) append("\n")
+                    } else if (casilla.explorada) {
+                        append(casilla.tipo.emoji)
 
+                    } else {
+                        append(getString(R.string.sinMirar))
+
+                    }
+
+                }
+
+                append("\n")
             }
         }
 
         tablero.text = t
-        textoActual.text = String.format(getString(R.string.textoActual), habitaciones[casillaActual])
+        textoActual.text = String.format(
+            getString(R.string.textoActual),
+            habitaciones[casillaActual.first][casillaActual.second].tipo.emoji
+        )
 
     }
 
@@ -99,10 +117,10 @@ class MainActivity : AppCompatActivity() {
         val inactivo: Int = getColor(R.color.inactive)
         val activo: Int = getColor(R.color.active)
 
-        bNorte.isClickable = !preguntando && casillaActual > 3
-        bOeste.isClickable = !preguntando && casillaActual%4 != 0
-        bEste.isClickable = !preguntando && casillaActual%4 != 3
-        bSur.isClickable = !preguntando && casillaActual < 12
+        bNorte.isClickable = !preguntando && casillaActual.first != 0
+        bOeste.isClickable = !preguntando && casillaActual.second != 0
+        bEste.isClickable = !preguntando && casillaActual.second != 3
+        bSur.isClickable = !preguntando && casillaActual.first != 3
 
         bNorte.setBackgroundColor( if (bNorte.isClickable) activo else inactivo)
         bOeste.setBackgroundColor( if (bOeste.isClickable) activo else inactivo)
@@ -113,29 +131,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun botonPulsado(boton: Button) {
         when (boton) {
-            bNorte -> casillaActual -= 4
-            bOeste -> casillaActual--
-            bEste -> casillaActual++
-            bSur -> casillaActual += 4
+            bNorte -> casillaActual = Pair(casillaActual.first - 1, casillaActual.second)
+            bOeste -> casillaActual = Pair(casillaActual.first, casillaActual.second - 1)
+            bEste -> casillaActual = Pair(casillaActual.first, casillaActual.second + 1)
+            bSur -> casillaActual = Pair(casillaActual.first + 1, casillaActual.second)
 
         }
 
         mostrarTablero()
 
-        if (explorado[casillaActual] == getString(R.string.sinMirar)) {
+        if (!habitaciones[casillaActual.first][casillaActual.second].explorada) {
             // TODO Si es habitacion vacia hacer pregunta
             actualizarBotones(true)
 
             // TODO Si es fantasma hacer otra más
 
             // Si acierta la pregunta o es dulce
-            explorado[casillaActual] = habitaciones[casillaActual]
+            habitaciones[casillaActual.first][casillaActual.second].explorada = true
 
         }
 
         actualizarBotones()
 
-        if (explorado[casillaActual] == getString(R.string.dulce)) {
+        if (habitaciones[casillaActual.first][casillaActual.second].tipo == Casilla.Tipos.DULCE) {
             // TODO código para ganar la partida
 
         }

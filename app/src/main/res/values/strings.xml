@@ -1,12 +1,7 @@
 <resources>
     <string name="app_name">Juego Tablero</string>
-    <string name="puerta">🚪</string>
-    <string name="fantasma">👻</string>
-    <string name="vacia">◻️</string>
     <string name="sinMirar">◼️</string>
-    <string name="bloqueado">🟥</string>
-    <string name="actual">🙂</string>
-    <string name="dulce">🍭</string>
+    <string name="persona">🙂</string>
 
     <string name="textoActual">La casilla actual es %1$s</string>
 </resources>
