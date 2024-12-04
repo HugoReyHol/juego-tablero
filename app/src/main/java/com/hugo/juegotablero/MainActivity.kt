@@ -7,6 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.hugo.juegotablero.model.Casilla
 
 const val ANCHO_LADO: Int = 4
+val PREGUNTAS: Map<String, String> = mapOf(
+    "Enunciado1" to "Respuesta1",
+    "Enunciado2" to "Respuesta2",
+    "Enunciado3" to "Respuesta3",
+    "Enunciado4" to "Respuesta4",
+    )
 
 class MainActivity : AppCompatActivity() {
     private val habitaciones: Array<Array<Casilla>> = Array(ANCHO_LADO) {
@@ -63,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // La entrada siempre está situada arriba a la izquierda
-        var inicio: Casilla = habitaciones[casillaActual.first][casillaActual.second]
+        val inicio: Casilla = habitaciones[casillaActual.first][casillaActual.second]
 
         inicio.tipo = Casilla.Tipos.ENTRADA
         inicio.explorada = true
@@ -167,6 +173,12 @@ class MainActivity : AppCompatActivity() {
             // TODO código para ganar la partida
 
         }
+
+    }
+
+    private fun preguntar() {
+        val enunciado: String = PREGUNTAS.keys.random()
+
 
     }
 }
