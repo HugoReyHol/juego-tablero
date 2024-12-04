@@ -117,10 +117,18 @@ class MainActivity : AppCompatActivity() {
         val inactivo: Int = getColor(R.color.inactive)
         val activo: Int = getColor(R.color.active)
 
-        bNorte.isClickable = !preguntando && casillaActual.first != 0
-        bOeste.isClickable = !preguntando && casillaActual.second != 0
-        bEste.isClickable = !preguntando && casillaActual.second != 3
-        bSur.isClickable = !preguntando && casillaActual.first != 3
+        bNorte.isClickable = !preguntando && casillaActual.first != 0 &&
+                habitaciones[casillaActual.first-1][casillaActual.second].tipo != Casilla.Tipos.BLOQUEADO
+
+        bOeste.isClickable = !preguntando && casillaActual.second != 0 &&
+                habitaciones[casillaActual.first][casillaActual.second-1].tipo != Casilla.Tipos.BLOQUEADO
+
+        bEste.isClickable = !preguntando && casillaActual.second != 3 &&
+                habitaciones[casillaActual.first][casillaActual.second+1].tipo != Casilla.Tipos.BLOQUEADO
+
+        bSur.isClickable = !preguntando && casillaActual.first != 3 &&
+                habitaciones[casillaActual.first+1][casillaActual.second].tipo != Casilla.Tipos.BLOQUEADO
+
 
         bNorte.setBackgroundColor( if (bNorte.isClickable) activo else inactivo)
         bOeste.setBackgroundColor( if (bOeste.isClickable) activo else inactivo)
@@ -130,6 +138,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun botonPulsado(boton: Button) {
+        val casillaAnterior: Pair<Int, Int > = casillaActual.copy()
+
         when (boton) {
             bNorte -> casillaActual = Pair(casillaActual.first - 1, casillaActual.second)
             bOeste -> casillaActual = Pair(casillaActual.first, casillaActual.second - 1)
