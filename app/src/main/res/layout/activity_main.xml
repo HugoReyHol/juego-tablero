@@ -88,6 +88,8 @@
         android:id="@+id/textEnunciado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="15sp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:textSize="26sp"

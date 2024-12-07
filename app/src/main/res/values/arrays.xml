@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preguntas">
-        <item>enunciado1|1</item>
-        <item>enunciado2|2</item>
-        <item>enunciado3|3</item>
-        <item>enunciado4|4</item>
+        <item>¿En qué año llegó Cristóbal Colón a América?|1492</item>
+        <item>¿En qué continente se encuentra el desierto del Sahara?|áfrica</item>
+        <item>¿Cuál es la capital de Australia?|canberra</item>
+        <item>¿Cuántos elementos tiene la tabla periódica actualmente?|118</item>
+        <item>¿Quién pintó la Capilla Sixtina?|miguel ángel</item>
+        <item>¿Qué película ganó el Oscar a Mejor Película en 1994?|forrest gump</item>
+        <item>¿Qué significa "www" en las direcciones de Internet?|world wide web</item>
+        <item>¿En qué año comenzó la Segunda Guerra Mundial?|1939</item>
+        <item>¿Cuál es el río más largo del mundo?|amazonas</item>
+        <item>¿Cuál es el país más grande del mundo por superficie?|rusia</item>
+        <item>¿Cuál es el planeta más grande del sistema solar?|júpiter</item>
+        <item>¿Cómo se llama el proceso por el cual las plantas producen su alimento?|fotosíntesis</item>
+        <item>¿Quién desarrolló la teoría de la relatividad?|albert einstein</item>
+        <item>¿Quién escribió Don Quijote de la Mancha?|miguel de cervantes</item>
+        <item>¿Qué poeta chileno ganó el Premio Nobel de Literatura en 1971?|pablo neruda</item>
+        <item>¿En qué país se encuentra el Museo del Louvre?|francia</item>
+        <item>¿En qué año se estrenó la primera película de Harry Potter?|2001</item>
     </array>
 </resources>

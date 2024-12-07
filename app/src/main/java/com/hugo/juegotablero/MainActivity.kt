@@ -263,7 +263,8 @@ class MainActivity : AppCompatActivity() {
                 it.forEach {
                     append("$it, ")
                 }
-                append("\n") } })
+                append("\n") }
+            })
 
             for (f in -1..1) {
                 for (c in -1..1) {
