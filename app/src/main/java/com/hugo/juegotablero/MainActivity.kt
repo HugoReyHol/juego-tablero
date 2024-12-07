@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.hugo.juegotablero.model.Casilla
 import kotlinx.coroutines.Runnable
+import kotlin.math.abs
 
 const val ANCHO_LADO: Int = 4
 val PREGUNTAS: Map<String, String> = mapOf(
@@ -250,27 +251,41 @@ class MainActivity : AppCompatActivity() {
             posicion = vecinas.removeAt(vecinas.lastIndex)
             visitadas[posicion.first][posicion.second] = true
             Log.i("DFS", posicion.toString())
-            Log.i("DFS", visitadas.forEach { it.toString() }.toString())
+            Log.i("DFS", buildString { visitadas.forEach {
+                it.forEach {
+                    append("$it, ")
+                }
+                append("\n") } })
 
-            for (f in intArrayOf(-1,1)) {
-                for (c in intArrayOf(-1,1)) {
-                    if (posicion.first+f >= 0
-                        && posicion.second+c >= 0
-                        && posicion.first+f < ANCHO_LADO
-                        && posicion.second+c < ANCHO_LADO
-                        && habitaciones[posicion.first+f][posicion.second+c].tipo != Casilla.Tipos.BLOQUEADO
-                        && !visitadas[posicion.first+f][posicion.second+c]) {
+            for (f in -1..1) {
+                for (c in -1..1) {
+                    // Evita movimientos diagonales
+                    if (abs(f) == abs(c)) continue
 
-                        if (habitaciones[posicion.first+f][posicion.second+c].tipo == Casilla.Tipos.DULCE) {
-                            encontrado = true
-                            Log.i("DFS", "encontrado")
-                        }
+                    // La nueva coordenada tiene que estar dentro de rango
+                    if (posicion.first+f !in 0..<ANCHO_LADO || posicion.second+c !in 0..<ANCHO_LADO) continue
 
-                        vecinas.add(Pair(posicion.first+f, posicion.first+c))
-                        Log.i("DFS", "add f${posicion.first+f} c${posicion.second+c}")
+                    // Si la habitacion está bloqueda la salta
+                    if (habitaciones[posicion.first+f][posicion.second+c].tipo == Casilla.Tipos.BLOQUEADO) continue
+
+                    // Si ya ha sido visitada la salta
+                    if (visitadas[posicion.first+f][posicion.second+c]) continue
+
+                    // Si ya está guardada para visitar no la vuelve guardar
+                    if (vecinas.contains(Pair(posicion.first+f, posicion.second+c))) continue
+
+                    // Si la casilla si es valida para seguir buscando
+                    if (habitaciones[posicion.first+f][posicion.second+c].tipo == Casilla.Tipos.DULCE) {
+                        encontrado = true
+                        Log.i("DFS", "encontrado")
                     }
+
+                    vecinas.add(Pair(posicion.first+f, posicion.second+c))
+                    Log.i("DFS", "add f${posicion.first+f} c${posicion.second+c}")
                 }
             }
+
+            Log.i("DFS", vecinas.toString())
 
         } while (vecinas.isNotEmpty() && !encontrado)
 
