@@ -16,14 +16,9 @@ import kotlinx.coroutines.Runnable
 import kotlin.math.abs
 
 const val ANCHO_LADO: Int = 4
-val PREGUNTAS: Map<String, String> = mapOf(
-    "Enunciado1" to "1",
-    "Enunciado2" to "2",
-    "Enunciado3" to "3",
-    "Enunciado4" to "4",
-    )
 
 class MainActivity : AppCompatActivity() {
+    private val preguntas: HashMap<String, String> = hashMapOf()
     private val habitaciones: Array<Array<Casilla>> = Array(ANCHO_LADO) {
         Array(ANCHO_LADO) {Casilla()}
     }
@@ -45,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         inicializarComponentes()
+        cargarPreguntas()
         inicializarJuego()
 
     }
@@ -84,6 +80,18 @@ class MainActivity : AppCompatActivity() {
 
             presionado
         }
+    }
+
+    private fun cargarPreguntas() {
+        val p: Array<String> = resources.getStringArray(R.array.preguntas)
+
+        p.forEach {
+            val valores: List<String> = it.split("|")
+            preguntas[valores[0]] = valores[1]
+        }
+
+        Log.i("ARRAY", preguntas.toString())
+
     }
 
     private fun inicializarJuego() {
@@ -203,7 +211,7 @@ class MainActivity : AppCompatActivity() {
     private fun preguntar() {
         actualizarBotones(true)
 
-        val enunciado: String = PREGUNTAS.keys.random()
+        val enunciado: String = preguntas.keys.random()
 
         textEnunciado.text = enunciado
         textRespuesta.text.clear()
@@ -216,7 +224,7 @@ class MainActivity : AppCompatActivity() {
         val respuesta: String = textRespuesta.text.toString().lowercase()
         val habitacion: Casilla = habitaciones[casillaActual.first][casillaActual.second]
 
-        if (respuesta == PREGUNTAS[textEnunciado.text.toString()]) {
+        if (respuesta == preguntas[textEnunciado.text.toString()]) {
             habitacion.preguntasRest -= 1
 
         } else {

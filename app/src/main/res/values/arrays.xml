@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preguntas">
+        <item>enunciado1|1</item>
+        <item>enunciado2|2</item>
+        <item>enunciado3|3</item>
+        <item>enunciado4|4</item>
+    </array>
+</resources>
