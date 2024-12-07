@@ -1,7 +1,7 @@
 package com.hugo.juegotablero.model
 
 class Casilla{
-    var explorada: Boolean = false
+    var preguntasRest: Int = 1
     var tipo: Tipos = Tipos.VACIO
 
     enum class Tipos(val emoji: String) {
@@ -13,8 +13,8 @@ class Casilla{
     }
 
     fun reiniciar() {
-        explorada = false
         tipo = if ((1..10).random() <= 2) Tipos.FANTASMA else Tipos.VACIO
+        preguntasRest = if (tipo == Tipos.VACIO) 1 else 2
     }
 
 }
